@@ -1,4 +1,36 @@
-const OKX_BASE = "https://www.okx.com";
+import { Agent } from "undici";
+import { Resolver } from "node:dns/promises";
+import * as net from "node:net";
+import * as tls from "node:tls";
+
+const OKX_BASE = "https://openapi.okx.com";
+
+// Custom DNS resolver for environments where system DNS fails (e.g. ENOTFOUND)
+const dns = new Resolver();
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
+
+const okxAgent = new Agent({
+  connect: async (opts: any, callback: any) => {
+    try {
+      const hostname = opts.hostname || opts.host;
+      const addrs = await dns.resolve4(hostname);
+      const ip = addrs[0];
+      const port = opts.port || 443;
+
+      const socket = tls.connect({
+        host: ip,
+        port,
+        servername: hostname,
+        rejectUnauthorized: true,
+      });
+
+      socket.on("connect", () => callback(null, socket));
+      socket.on("error", (err) => callback(err));
+    } catch (err) {
+      callback(err);
+    }
+  },
+});
 
 export interface Ticker {
   instId: string;
@@ -21,7 +53,7 @@ export interface Candle {
 
 export async function fetchTicker(instId: string): Promise<Ticker> {
   const url = `${OKX_BASE}/api/v5/market/ticker?instId=${instId}`;
-  const response = await fetch(url);
+  const response = await fetch(url, { dispatcher: okxAgent } as any);
   const data = await response.json();
   if (data.code !== "0") {
     throw new Error(`OKX ticker error: ${data.msg}`);
@@ -35,7 +67,7 @@ export async function fetchCandles(
   limit: number = 100
 ): Promise<Candle[]> {
   const url = `${OKX_BASE}/api/v5/market/candles?instId=${instId}&bar=${bar}&limit=${limit}`;
-  const response = await fetch(url);
+  const response = await fetch(url, { dispatcher: okxAgent } as any);
   const data = await response.json();
   if (data.code !== "0") {
     throw new Error(`OKX candles error: ${data.msg}`);
@@ -53,7 +85,7 @@ export async function fetchCandles(
 
 export async function fetchFundingRate(instId: string): Promise<number> {
   const url = `${OKX_BASE}/api/v5/public/funding-rate?instId=${instId}`;
-  const response = await fetch(url);
+  const response = await fetch(url, { dispatcher: okxAgent } as any);
   const data = await response.json();
   if (data.code !== "0") {
     throw new Error(`OKX funding rate error: ${data.msg}`);
