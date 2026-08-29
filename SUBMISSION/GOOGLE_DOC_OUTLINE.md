@@ -52,7 +52,9 @@ fractional-Kelly sizing and an in-enclave neural net.
 
 ## 4. Live on-chain demo (testnet)
 Recorded verbatim in `SUBMISSION/verification/LIVE_OUTPUTS.md`:
-- Risk params + mandate read.
+- **Real OKX data**: BTC-USDT live at $77,844, 1H candles fetched successfully.
+- **Signal engine**: MA5 (77,771.88) ≈ MA20 (77645.19), 0.16% spread → no signal → correctly rejected.
+- **Crash-veto**: estimated from realized vol of real OKX candles (0bps = low risk).
 - `ml-predict`: neutral 0.485 / bullish 0.638 / bearish 0.488.
 - `compute-size`: $2500 Kelly-capped; over-sweet-spot → $0.
 - `evaluate-mandate`: $700 → **allow**; $2000 → **escalate** (real id).

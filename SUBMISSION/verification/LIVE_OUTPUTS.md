@@ -137,17 +137,17 @@ short scripts (see `verify-new-functions.ts` / `verify-escalation-lifecycle.ts`)
 
 ## 9. Full trading cycle (`npx tsx src/demo.ts`)
 
-The demo runs the complete signal → validate → execute pipeline. With OKX
-down (`ENOTFOUND www.okx.com`), the signal engine fails safe ("no signal")
-and the trade is correctly REJECTED — demonstrating the fail-closed behavior.
-The pending escalations list shows all accumulated escalation entries from
-earlier verification runs.
+The demo runs the complete signal → validate → execute pipeline with **real
+OKX candle data**. The signal engine fetches live BTC-USDT 1H candles, computes
+MA5/MA20 crossover, extracts 17 features, and runs crash-veto estimation from
+realized volatility. When no clear signal exists (MA5 ≈ MA20), the agent
+correctly rejects — demonstrating disciplined, fail-closed behavior.
 
 ```
 --- T3N Trading Agent Demo ---
 Tenant: did:t3n:5db3681df85b9a698777a5aa603329da86cdb5dc
 Agent script: z:5db3681df85b9a698777a5aa603329da86cdb5dc:trading-risk-gate v0.1.3
-AgentDid: did:t3n:f877094c99cd7264ebaab2cf2c6307c097775b76
+agentDid: did:t3n:f877094c99cd7264ebaab2cf2c6307c097775b76
 
 --- Risk Parameters ---
 {
@@ -186,19 +186,19 @@ AgentDid: did:t3n:f877094c99cd7264ebaab2cf2c6307c097775b76
 
 --- Trading Cycle ---
 --- Processing BTC-USDT-SWAP ---
-Error processing BTC-USDT-SWAP: [TypeError: fetch failed] {
-  [cause]: Error: getaddrinfo ENOTFOUND www.okx.com
-  ...
-}
+Signal: none @ 77844.2 (0bps) - MA5 (77771.88) ≈ MA20 (77645.19), spread 0.16% - no signal
+Crash mass (P drawdown >20%): 0bps
 
---- Results ---
+=== Results ===
+
 Asset: BTC-USDT-SWAP
-Signal: none @ 0 (0bps)
-Reason: Error: TypeError: fetch failed
-Validation: REJECTED - Error: TypeError: fetch failed
+  Signal: none @ 77844.2 (0bps)
+  Reason: MA5 (77771.88) ≈ MA20 (77645.19), spread 0.16% - no signal
+  Crash mass: 0bps
+  Validation: REJECTED - No signal generated
 
 --- Pending Escalations ---
-(5 entries from earlier verification runs)
+(6 entries from earlier verification runs)
 
 --- Updated Daily Stats ---
 {
@@ -211,7 +211,8 @@ Validation: REJECTED - Error: TypeError: fetch failed
 --- Demo Complete ---
 ```
 
-> Note: the OKX ENOTFOUND error is expected when www.okx.com is unreachable
-> from the local network. The agent fails safe: "no signal" → REJECTED.
-> When OKX is reachable, the signal engine produces real MA crossover signals
-> and the full pipeline executes (validate → mandate → size → execute).
+> Note: the agent correctly rejected because MA5 (77,771.88) ≈ MA20 (77,645.19)
+> with only 0.16% spread — no clear crossover signal. This is the intended
+> behavior: the agent only trades on confirmed signals, not noise. When a
+> clear MA crossover occurs (spread > threshold), the full pipeline executes:
+> validate → mandate → size → execute.
