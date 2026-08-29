@@ -1,0 +1,11 @@
+# Rust contract build artifacts
+contract/target/
+
+# Node modules
+service/node_modules/
+service/dist/
+
+# Environment / secrets (never commit)
+service/.env
+**/.env
+*.env

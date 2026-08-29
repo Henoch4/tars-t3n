@@ -1,0 +1,29 @@
+{
+  "name": "t3n-trading-agent",
+  "version": "0.1.0",
+  "description": "T3N-native trusted trading agent",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "build": "tsc",
+    "quickstart": "tsx src/quickstart.ts",
+    "setup": "tsx src/setup.ts",
+    "register": "tsx src/register.ts",
+    "update-acls": "tsx src/update-acls.ts",
+    "verify-new-functions": "tsx src/verify-new-functions.ts",
+    "demo": "tsx src/demo.ts"
+  },
+  "keywords": ["t3n", "trading", "tee", "agent"],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@terminal3/t3n-sdk": "^5.2.0",
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.12",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,15 @@
+# Environment / secrets (never commit)
+.env
+*.env
+.env.*
+
+# Rust build artifacts
+t3n/contract/target/
+
+# Node modules
+t3n/service/node_modules/
+t3n/service/dist/
+
+# OS files
+.DS_Store
+Thumbs.db
