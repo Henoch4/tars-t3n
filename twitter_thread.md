@@ -4,7 +4,7 @@ Most "trusted" AI agents are trusted by vibes. They yell "I'm safe!" and you jus
 So I built the safety layer where it can't be lied about.
 
 🧵 2/8
-Meet **TARS** — a trusted enterprise trading agent where the *entire risk policy lives inside a @terminal3io T3N TEE contract*.
+Meet **TARS** (@tarstrade) — a trusted enterprise trading agent where the *entire risk policy lives inside a @terminal3io T3N TEE contract*.
 
 The enclave approves or rejects every trade. The trading client physically cannot bypass it. No vibes — verified.
 
