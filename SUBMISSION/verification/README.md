@@ -1,6 +1,6 @@
 # WASM WIT verification — `wasm-tools component wit`
 
-## Status: build done, extract one command away
+## Status: complete
 
 The release component is built:
 `t3n/contract/target/wasm32-wasip2/release/z_trading_risk_gate.wasm`
@@ -8,17 +8,8 @@ The release component is built:
 contract imports `kv-store`, `logging` and `tenant-context` only, pruning the
 unused `http` host interfaces).
 
-Generate the binary-level WIT extract and save it as
-`z_trading_risk_gate.wit.txt` next to this file:
-
-```
-wasm-tools component wit t3n/contract/target/wasm32-wasip2/release/z_trading_risk_gate.wasm > SUBMISSION/verification/z_trading_risk_gate.wit.txt
-```
-
-Getting wasm-tools (either works):
-- Prebuilt: download `wasm-tools-<ver>-x86_64-windows.zip` from
-  https://github.com/bytecodealliance/wasm-tools/releases and unzip.
-- Cargo: `cargo install wasm-tools --locked`
+The binary-level WIT extract is included as `z_trading_risk_gate.wit.txt`
+(generated via `wasm-tools component wit`).
 
 ## Expected result
 
