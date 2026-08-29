@@ -2,6 +2,7 @@ import { Agent } from "undici";
 import { Resolver } from "node:dns/promises";
 import * as net from "node:net";
 import * as tls from "node:tls";
+import crypto from "node:crypto";
 
 const OKX_BASE = "https://openapi.okx.com";
 
@@ -102,7 +103,6 @@ export async function placeOrder(params: {
   px?: string;
   ccy?: string;
 }): Promise<any> {
-  // In demo mode, just return a mock response
   if (process.env.DRY_RUN === "true") {
     console.log("[DRY RUN] Would place order:", params);
     return {
@@ -117,6 +117,52 @@ export async function placeOrder(params: {
     };
   }
 
-  // Real implementation would use OKX signed API
-  throw new Error("Real OKX order placement not implemented - set DRY_RUN=true");
+  const apiKey = process.env.OKX_API_KEY || "";
+  const apiSecret = process.env.OKX_API_SECRET || "";
+  const apiPassphrase = process.env.OKX_API_PASSPHRASE || "";
+
+  if (!apiKey || !apiSecret || !apiPassphrase) {
+    throw new Error(
+      "OKX API credentials not configured. Set OKX_API_KEY, OKX_API_SECRET, OKX_API_PASSPHRASE."
+    );
+  }
+
+  const ts = new Date().toISOString();
+  const body = JSON.stringify({
+    instId: params.instId,
+    tdMode: params.tdMode,
+    side: params.side,
+    ordType: params.ordType,
+    sz: params.sz,
+    ...(params.px && { px: params.px }),
+    ...(params.ccy && { ccy: params.ccy }),
+  });
+  const method = "POST";
+  const requestPath = "/api/v5/trade/order";
+  const signPayload = ts + method + requestPath + body;
+  const signature = crypto
+    .createHmac("sha256", apiSecret)
+    .update(signPayload, "utf8")
+    .digest("base64");
+
+  const response = await fetch(
+    `${OKX_BASE}${requestPath}`,
+    {
+      dispatcher: okxAgent,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "OK-ACCESS-KEY": apiKey,
+        "OK-ACCESS-SIGN": signature,
+        "OK-ACCESS-TIMESTAMP": ts,
+        "OK-ACCESS-PASSPHRASE": apiPassphrase,
+      },
+      body,
+    } as any
+  );
+  const data = await response.json();
+  if (data.code !== "0") {
+    throw new Error(`OKX order error: ${data.msg}`);
+  }
+  return data;
 }
