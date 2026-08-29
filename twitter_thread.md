@@ -44,11 +44,11 @@ Details + docs: https://github.com/Henoch4/tars-t3n
 ---
 
 📸 Attach these screenshots to tweet 7/8 (the "Everything verified" tweet):
-1. SUBMISSION/screenshots/10-verify-functions-12-exports-ml-predict.png
-   Shows: all 12 enclave exports listed, ml-predict results (neutral 0.485, bullish 0.638, bearish 0.488)
+1. SUBMISSION/screenshots/14-demo-trading-cycle-real-okx.png
+   Shows: REAL OKX DATA — BTC at $77,985, MA5/MA20 crossover, crash mass, rejected (no signal)
 
-2. SUBMISSION/screenshots/11-verify-functions-sizing-mandate-execute.png
-   Shows: compute-size ($2500, sweet_spot=true), evaluate-mandate allow/escalate, execute-plan deny/refuse
+2. SUBMISSION/screenshots/17-verify-functions-sizing-mandate-execute.png
+   Shows: all 12 exports, ml-predict, compute-size, evaluate-mandate, execute-plan
 
-3. SUBMISSION/screenshots/09-escalation-lifecycle-clean.png
-   Shows: full escalation lifecycle — create → list → resolve → list-empty (no errors)
+3. SUBMISSION/screenshots/16-verify-functions-12-exports-ml-predict.png
+   Shows: 12 exports listed, ml-predict (neutral 0.485, bullish 0.638, bearish 0.488)
