@@ -12,7 +12,7 @@ import {
 } from "./contract.js";
 
 async function main() {
-  console.log("=== Verify New TEE Functions (contract 0.1.3) ===\n");
+  console.log("=== Verify New TEE Functions (contract 1.0.0) ===\n");
 
   const { tenantClient, tenantDid } = await createTenantClient();
   const { agentClient, agentDid, scriptName, scriptVersion } = await createAgentClient(tenantDid);

@@ -51,7 +51,7 @@ async function main() {
   // Read WASM file
   const WASM_PATH = "../contract/target/wasm32-wasip2/release/z_trading_risk_gate.wasm";
   const CONTRACT_TAIL = "trading-risk-gate";
-  const CONTRACT_VERSION = "0.1.3";
+  const CONTRACT_VERSION = "1.0.0";
 
   const wasmBytes = await readFile(WASM_PATH);
   console.log(`WASM size: ${wasmBytes.length} bytes`);

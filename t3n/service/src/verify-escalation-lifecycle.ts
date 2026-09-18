@@ -7,7 +7,7 @@ import {
 } from "./contract.js";
 
 const SCRIPT = "z:5db3681df85b9a698777a5aa603329da86cdb5dc:trading-risk-gate";
-const VER = "0.1.3";
+const VER = "1.0.0";
 
 async function main() {
   const userClient = await createUserClient();
