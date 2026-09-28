@@ -5,10 +5,6 @@ extern crate alloc;
 generate!({
     world: "trading-risk-gate",
     path: "wit",
-    additional_derives: [
-        serde::Deserialize,
-        serde::Serialize,
-    ],
     generate_all,
 });
 

@@ -1,12 +1,11 @@
 package root:component;
 
-world root {
-  import host:tenant/tenant-context@1.0.0;
+world trading-risk-gate {
+  import host:tenant/tenant-context@1.2.0;
   import host:interfaces/logging@2.1.0;
   import host:interfaces/kv-store@2.1.0;
   import wasi:io/poll@0.2.9;
   import wasi:clocks/monotonic-clock@0.2.9;
-  import wasi:io/error@0.2.9;
   import wasi:io/streams@0.2.9;
   import wasi:cli/stdout@0.2.9;
   import wasi:cli/stderr@0.2.9;
@@ -23,6 +22,15 @@ world root {
 }
 package host:tenant@1.2.0 {
   interface tenant-context {
+    record scope {
+      path: string,
+      access: string,
+    }
+
+    record grant {
+      function: string,
+    }
+
     tenant-did: func() -> list<u8>;
 
     calling-user-did: func() -> option<list<u8>>;
@@ -30,20 +38,11 @@ package host:tenant@1.2.0 {
     cluster-timestamp-secs: func() -> u64;
 
     seq-no: func() -> u64;
+
+    delegated-scopes: func() -> list<scope>;
+
+    delegated-functions: func() -> list<grant>;
   }
-
-  type scope = record {
-    path: string,
-    access: string,
-  };
-
-  type grant = record {
-    function: string,
-  };
-
-  delegated-scopes: func() -> list<scope>;
-
-  delegated-functions: func() -> list<grant>;
 }
 
 
