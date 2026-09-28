@@ -42,7 +42,7 @@ async function main() {
   console.log(d + "size_usd =", size.size_usd, "(sweet_spot =", size.sweet_spot + ")");
 
   const sizeHigh = await computeSize(userClient, scriptName, scriptVersion, {
-    confidence_bps: 9000, nn_win_prob: null, size_usd: 1000,
+    confidence_bps: 9000, nn_win_prob: undefined, size_usd: 1000,
   });
   console.log(d + "over-sweet spot (9000bps) size_usd =", sizeHigh.size_usd);
 
@@ -51,7 +51,7 @@ async function main() {
   const planAllow = {
     action_type: "trade",
     nonce: 1,
-    trade_params: { asset: "BTC-USDT-SWAP", direction: "long", size_usd: 700, price: 77500, confidence_bps: 5500, crash_mass: 0.05 },
+    trade_params: { asset: "BTC-USDT-SWAP", direction: "long" as const, size_usd: 700, price: 77500, confidence_bps: 5500, crash_mass: 0.05 },
   };
   const vAllow = await evaluateMandate(userClient, scriptName, scriptVersion, planAllow);
   console.log(d + JSON.stringify(vAllow));
@@ -61,7 +61,7 @@ async function main() {
   const planEsc = {
     action_type: "trade",
     nonce: 2,
-    trade_params: { asset: "BTC-USDT-SWAP", direction: "long", size_usd: 2000, price: 77500, confidence_bps: 5500, crash_mass: 0.05 },
+    trade_params: { asset: "BTC-USDT-SWAP", direction: "long" as const, size_usd: 2000, price: 77500, confidence_bps: 5500, crash_mass: 0.05 },
   };
   const vEsc = await evaluateMandate(userClient, scriptName, scriptVersion, planEsc);
   console.log(d + JSON.stringify(vEsc));

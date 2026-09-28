@@ -14,13 +14,19 @@
     "verify-new-functions": "tsx src/verify-new-functions.ts",
     "demo": "tsx src/demo.ts"
   },
-  "keywords": ["t3n", "trading", "tee", "agent"],
+  "keywords": [
+    "t3n",
+    "trading",
+    "tee",
+    "agent"
+  ],
   "author": "",
   "license": "MIT",
   "type": "module",
   "dependencies": {
     "@terminal3/t3n-sdk": "^5.2.0",
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "undici": "^7.30.0"
   },
   "devDependencies": {
     "tsx": "^4.23.12",

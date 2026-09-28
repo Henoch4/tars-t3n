@@ -48,13 +48,12 @@ export async function createTenantClient(): Promise<{
   const tenantDid = auth.value;
 
   const tenantClient = new TenantClient({
-    trustAnchor: await fetchTrustedManifest("testnet"),
     wasmComponent,
     tenantDid,
     handlers: {
       EthSign: metamask_sign(address, undefined, T3N_API_KEY),
     },
-  });
+  } as any);
 
   return { tenantClient, tenantDid };
 }

@@ -55,7 +55,7 @@ export interface Candle {
 export async function fetchTicker(instId: string): Promise<Ticker> {
   const url = `${OKX_BASE}/api/v5/market/ticker?instId=${instId}`;
   const response = await fetch(url, { dispatcher: okxAgent } as any);
-  const data = await response.json();
+  const data = await response.json() as any;
   if (data.code !== "0") {
     throw new Error(`OKX ticker error: ${data.msg}`);
   }
@@ -69,7 +69,7 @@ export async function fetchCandles(
 ): Promise<Candle[]> {
   const url = `${OKX_BASE}/api/v5/market/candles?instId=${instId}&bar=${bar}&limit=${limit}`;
   const response = await fetch(url, { dispatcher: okxAgent } as any);
-  const data = await response.json();
+  const data = await response.json() as any;
   if (data.code !== "0") {
     throw new Error(`OKX candles error: ${data.msg}`);
   }
@@ -87,7 +87,7 @@ export async function fetchCandles(
 export async function fetchFundingRate(instId: string): Promise<number> {
   const url = `${OKX_BASE}/api/v5/public/funding-rate?instId=${instId}`;
   const response = await fetch(url, { dispatcher: okxAgent } as any);
-  const data = await response.json();
+  const data = await response.json() as any;
   if (data.code !== "0") {
     throw new Error(`OKX funding rate error: ${data.msg}`);
   }
@@ -160,7 +160,7 @@ export async function placeOrder(params: {
       body,
     } as any
   );
-  const data = await response.json();
+  const data = await response.json() as any;
   if (data.code !== "0") {
     throw new Error(`OKX order error: ${data.msg}`);
   }

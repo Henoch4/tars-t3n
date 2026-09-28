@@ -25,13 +25,12 @@ async function main() {
   const address = eth_get_address(T3N_API_KEY);
 
   const t3n = new TenantClient({
-    trustAnchor: await fetchTrustedManifest("testnet"),
     wasmComponent,
     tenantDid: "", // Will be filled after auth
     handlers: {
       EthSign: metamask_sign(address, undefined, T3N_API_KEY),
     },
-  });
+  } as any);
 
   // First authenticate to get tenantDid
   const auth = await (t3n as any).authenticate(createEthAuthInput(address));
@@ -40,13 +39,12 @@ async function main() {
 
   // Update tenantClient with tenantDid
   const tenantClient = new TenantClient({
-    trustAnchor: await fetchTrustedManifest("testnet"),
     wasmComponent,
     tenantDid,
     handlers: {
       EthSign: metamask_sign(address, undefined, T3N_API_KEY),
     },
-  });
+  } as any);
 
   // Get contract ID (assuming already registered)
   const { getContractVersion } = await import("@terminal3/t3n-sdk");
